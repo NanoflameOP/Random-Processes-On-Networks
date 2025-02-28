@@ -6,6 +6,11 @@ from scipy.stats import Normal
 import ast
 import math
 import time
+
+
+##################################################################################################################
+# This code requires manual modification to obtain correct results as some diameter values were computed by hand #
+##################################################################################################################
                     
 
 
@@ -114,15 +119,17 @@ def box_plot(data,desired_parameter,show_bounds=False,min_deg_test_scale=False,n
     if (desired_parameter == 'Time taken') and (show_bounds == True):
         for i in range(len(filtered_data)):
             if i == 0:
-                #plt.plot([i-0.1,i+0.1],[diameters[i],diameters[i]],color='red',label="Lower bound of proposition 4.1")
+                #plt.plot([i-0.1,i+0.1],[diameters[i],diameters[i]],color='red',label="Lower bound of proposition 2.1")
                 #plt.plot([i-0.1,i+0.1],[math.log(n_values[i])/math.log(n_values[i]*p_values[i]),math.log(n_values[i])/math.log(n_values[i]*p_values[i])],color='blue',label="Lower bound of lower part of theorem 3.2 and proposition 4.1")                
                 #plt.plot([i-0.1,i+0.1],[(math.log(n_values[i])/math.log(n_values[i]*p_values[i]))+2*math.log(n_values[i])*((10*((n_values[i]*p_values[i]))/((math.sqrt((n_values[i]*p_values[i]))-1)**2)+1)/((n_values[i]*p_values[i])*((n_values[i]*p_values[i])-math.log(2*(n_values[i]*p_values[i])))))+1,(math.log(n_values[i])/math.log(n_values[i]*p_values[i]))+2*math.log(n_values[i])*((10*((n_values[i]*p_values[i]))/((math.sqrt((n_values[i]*p_values[i]))-1)**2)+1)/((n_values[i]*p_values[i])*((n_values[i]*p_values[i])-math.log(2*(n_values[i]*p_values[i])))))+1],color='brown',label="Lower bound of upper part of theorem 3.2 and proposition 4.1 (c=np)")
-                #plt.plot([i-0.1,i+0.1],[math.ceil((n_values[i]-1)/min_degrees[i]),math.ceil((n_values[i]-1)/min_degrees[i])],color='green',label="Lower bound of proposition 4.2")
-                plt.plot([i-0.1,i+0.1],[((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i],((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i]],color='orange',label="Lower bound of conjecture 5.2")
+                #plt.plot([i-0.1,i+0.1],[math.ceil((n_values[i]-1)/min_degrees[i]),math.ceil((n_values[i]-1)/min_degrees[i])],color='green',label="Lower bound of proposition 2.2")
+                plt.plot([i-0.1,i+0.1],[((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i],((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i]],color='orange',label="Lower bound of conjecture 2.3")
                 #plt.plot([i-0.1,i+0.1],[diameters[i]*math.log(n_values[i])/(p_values[i]**2),diameters[i]*math.log(n_values[i])/(p_values[i]**2)],color='purple',label="Upper bound of conjecture 5.1")
                 #plt.plot([i-0.1,i+0.1],[(n_values[i]**(3/2))/(2*k_values[i]),(n_values[i]**(3/2))/(2*k_values[i])],color='blue',label="Lower bound conjecture of "+r'$\frac{n^{3/2}}{2k}$')
                 #plt.plot([i-0.1,i+0.1],[n_values[i]**2,n_values[i]**2],color='blue',label="Upper bound conjecture of $n^2$")
-                plt.plot([i-0.1,i+0.1],[analytical_bound(n_values[i],p_values[i]),analytical_bound(n_values[i],p_values[i])],color='blue',label="Analytical bound")
+                #plt.plot([i-0.1,i+0.1],[analytical_bound(n_values[i],p_values[i]),analytical_bound(n_values[i],p_values[i])],color='blue',label="Analytical bound")
+                #plt.plot([i-0.1,i+0.1],[((n_values[i]/(2*k_values[i]))**(2)),((n_values[i]/(2*k_values[i]))**(2))],color='blue',label="Lower bound conjecture of "+r'$\left(\frac{n}{2k}\right)^2$')
+                plt.plot([i-0.1,i+0.1],[((n_values[i])**(2))/(4*k_values[i]),((n_values[i])**(2))/(4*k_values[i])],color='blue',label="Upper bound conjecture of "+r'$\frac{n^{2}}{4k}$')
             else:
                 #plt.plot([i-0.1,i+0.1],[diameters[i],diameters[i]],color='red')
                 #plt.plot([i-0.1,i+0.1],[math.log(n_values[i])/math.log(n_values[i]*p_values[i]),math.log(n_values[i])/math.log(n_values[i]*p_values[i])],color='blue')
@@ -132,7 +139,9 @@ def box_plot(data,desired_parameter,show_bounds=False,min_deg_test_scale=False,n
                 #plt.plot([i-0.1,i+0.1],[diameters[i]*math.log(n_values[i])/(p_values[i]**2),diameters[i]*math.log(n_values[i])/(p_values[i]**2)],color='purple')
                 #plt.plot([i-0.1,i+0.1],[(n_values[i]**(3/2))/(2*k_values[i]),(n_values[i]**(3/2))/(2*k_values[i])],color='blue')
                 #plt.plot([i-0.1,i+0.1],[n_values[i]**2,n_values[i]**2],color='blue')
-                plt.plot([i-0.1,i+0.1],[analytical_bound(n_values[i],p_values[i]),analytical_bound(n_values[i],p_values[i])],color='blue')
+                #plt.plot([i-0.1,i+0.1],[analytical_bound(n_values[i],p_values[i]),analytical_bound(n_values[i],p_values[i])],color='blue')
+                #plt.plot([i-0.1,i+0.1],[((n_values[i]/(2*k_values[i]))**(2)),((n_values[i]/(2*k_values[i]))**(2))],color='blue')
+                plt.plot([i-0.1,i+0.1],[((n_values[i])**(2))/(4*k_values[i]),((n_values[i])**(2))/(4*k_values[i])],color='blue')
                 
     # Plot
     print("Diameters: ", diameters)
@@ -149,7 +158,10 @@ def box_plot(data,desired_parameter,show_bounds=False,min_deg_test_scale=False,n
         plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])) for i in range(len(graph_type))])
     else:
         plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])+", "+"\n"+str(graph_type[i][2])+"="+str(graph_type[i][1])+", "+"\n"+"i"+"="+str(graph_type[i][3])) if len(graph_type[i])==4 else str("n="+str(graph_type[i][0])+", "+"\n"+str(graph_type[i][2])+"="+str(graph_type[i][1])) for i in range(len(graph_type))])
-    plt.title('Boxplots of '+desired_parameter)
+    if desired_parameter == 'Time taken':
+        plt.title('Boxplots of time taken')
+    else:
+        plt.title('Boxplots of '+desired_parameter)
     plt.ylabel(desired_parameter)
     if min_deg_test_scale == True:
         plt.ylabel('Time steps taken x $\sqrt{d^{in}_{min}}e^{-1/d^{in}_{min}}$')
@@ -161,7 +173,7 @@ def box_plot(data,desired_parameter,show_bounds=False,min_deg_test_scale=False,n
         plt.ylabel('Time steps taken x '+ r'$\frac{\sqrt{d^{in}_{min}}\log((n-1)/2p)e^{-1/d^{in}_{min}}}{n\log(Diameter)} $')
     if (desired_parameter == 'Time taken') and (show_bounds == True):
         plt.legend()
-    #plt.ylim(bottom=0)
+    plt.ylim(bottom=0)
     plt.show()
     
 
@@ -423,7 +435,7 @@ def log_box_plot(data,desired_parameter,show_bounds=False):
     # All ER tests ordered by np/(n(n-1)/2)
     #diameters = [8.603,2.112,3.431,2.242,2.479,2.023,4.590,2.128,1.936,3.118,1.810,1.580,1.229,1.186,1.317]
     # All ER tests ordered by np
-    #diameters = [8.603,4.590,3.431,3.118,2.479,2.242,2.128,2.023,2.112,1.936,1.810,1.580,1.317,1.186,1.229]
+    diameters = [8.603,4.590,3.431,3.118,2.479,2.242,2.128,2.023,2.112,1.936,1.810,1.580,1.317,1.186,1.229]
     # All ER tests ordered by increasing p, then decreasing n if p equal
     #diameters = [8.603,4.590,3.431,2.112,2.242,2.479,3.118,2.023,2.128,1.936,1.810,1.580,1.229,1.317,1.186]
 
@@ -432,25 +444,29 @@ def log_box_plot(data,desired_parameter,show_bounds=False):
     if (desired_parameter == 'Time taken') and (show_bounds == True):
         for i in range(len(filtered_data)):
             if i == 0:
-                #plt.plot([i-0.1,i+0.1],[math.log(diameters[i]),math.log(diameters[i])],color='red',label="Lower bound of proposition 4.1")
+                #plt.plot([i-0.1,i+0.1],[math.log(diameters[i]),math.log(diameters[i])],color='red',label="Lower bound of proposition 2.1")
                 #plt.plot([i-0.1,i+0.1],[math.log(math.log(n_values[i])/math.log(n_values[i]*p_values[i])),math.log(math.log(n_values[i])/math.log(n_values[i]*p_values[i]))],color='blue',label="Lower bound of lower part of theorem 3.2 and proposition 4.1")                
                 #plt.plot([i-0.1,i+0.1],[math.log((math.log(n_values[i])/math.log(n_values[i]*p_values[i]))+2*math.log(n_values[i])*((10*((n_values[i]*p_values[i]))/((math.sqrt((n_values[i]*p_values[i]))-1)**2)+1)/((n_values[i]*p_values[i])*((n_values[i]*p_values[i])-math.log(2*(n_values[i]*p_values[i])))))+1),math.log((math.log(n_values[i])/math.log(n_values[i]*p_values[i]))+2*math.log(n_values[i])*((10*((n_values[i]*p_values[i]))/((math.sqrt((n_values[i]*p_values[i]))-1)**2)+1)/((n_values[i]*p_values[i])*((n_values[i]*p_values[i])-math.log(2*(n_values[i]*p_values[i])))))+1)],color='brown',label="Lower bound of upper part of theorem 3.2 and proposition 4.1 (c=np)")
-                #plt.plot([i-0.1,i+0.1],[math.log(math.ceil((n_values[i]-1)/min_degrees[i])),math.log(math.ceil((n_values[i]-1)/min_degrees[i]))],color='green',label="Lower bound of proposition 4.2")
-                plt.plot([i-0.1,i+0.1],[math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i]),math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i])],color='orange',label="Lower bound of conjecture 5.2")
+                #plt.plot([i-0.1,i+0.1],[math.log(math.ceil((n_values[i]-1)/min_degrees[i])),math.log(math.ceil((n_values[i]-1)/min_degrees[i]))],color='green',label="Lower bound of proposition 2.2")
+                #plt.plot([i-0.1,i+0.1],[math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i]),math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i])],color='orange',label="Lower bound of conjecture 2.3")
                 plt.plot([i-0.1,i+0.1],[math.log(diameters[i]*math.log(n_values[i])/(p_values[i]**2)),math.log(diameters[i]*math.log(n_values[i])/(p_values[i]**2))],color='purple',label="Upper bound of conjecture 5.1")
-                #plt.plot([i-0.1,i+0.1],[math.log((n_values[i]**(3/2))/(2*k_values[i])),math.log((n_values[i]**(3/2))/(2*k_values[i]))],color='blue',label="Lower bound conjecture of "+r'$\frac{n^{3/2}}{2k}$')
+                #plt.plot([i-0.1,i+0.1],[math.log((n_values[i]**(2))/(2*k_values[i])),math.log((n_values[i]**(2))/(2*k_values[i]))],color='blue',label="Upper bound conjecture of "+r'$\frac{n^{2}}{2k}$')
                 #plt.plot([i-0.1,i+0.1],[math.log(n_values[i]**2),math.log(n_values[i]**2)],color='blue',label="Upper bound conjecture of $n^2$")
                 plt.plot([i-0.1,i+0.1],[math.log(analytical_bound(n_values[i],p_values[i])),math.log(analytical_bound(n_values[i],p_values[i]))],color='blue',label="Analytical bound")
+                #plt.plot([i-0.1,i+0.1],[math.log(((n_values[i])**(2))/(4*k_values[i])),math.log(((n_values[i])**(2))/(4*k_values[i]))],color='blue',label="Upper bound conjecture of "+r'$\frac{n^{2}}{4k}$')
+                #plt.plot([i-0.1,i+0.1],[math.log(((n_values[i])**(2))/(k_values[i]**2)),math.log(((n_values[i])**(2))/(k_values[i]**2))],color='blue',label="Upper bound conjecture of "+r'$\left(\frac{n}{k}\right)^2$')
             else:
                 #plt.plot([i-0.1,i+0.1],[math.log(diameters[i]),math.log(diameters[i])],color='red')
                 #plt.plot([i-0.1,i+0.1],[math.log(math.log(n_values[i])/math.log(n_values[i]*p_values[i])),math.log(math.log(n_values[i])/math.log(n_values[i]*p_values[i]))],color='blue')                
                 #plt.plot([i-0.1,i+0.1],[math.log((math.log(n_values[i])/math.log(n_values[i]*p_values[i]))+2*math.log(n_values[i])*((10*((n_values[i]*p_values[i]))/((math.sqrt((n_values[i]*p_values[i]))-1)**2)+1)/((n_values[i]*p_values[i])*((n_values[i]*p_values[i])-math.log(2*(n_values[i]*p_values[i])))))+1),math.log((math.log(n_values[i])/math.log(n_values[i]*p_values[i]))+2*math.log(n_values[i])*((10*((n_values[i]*p_values[i]))/((math.sqrt((n_values[i]*p_values[i]))-1)**2)+1)/((n_values[i]*p_values[i])*((n_values[i]*p_values[i])-math.log(2*(n_values[i]*p_values[i])))))+1)],color='brown')
                 #plt.plot([i-0.1,i+0.1],[math.log(math.ceil((n_values[i]-1)/min_degrees[i])),math.log(math.ceil((n_values[i]-1)/min_degrees[i]))],color='green')
-                plt.plot([i-0.1,i+0.1],[math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i]),math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i])],color='orange')
+                #plt.plot([i-0.1,i+0.1],[math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i]),math.log(((n_values[i]-1)*math.log(n_values[i]-1))/min_degrees[i])],color='orange')
                 plt.plot([i-0.1,i+0.1],[math.log(diameters[i]*math.log(n_values[i])/(p_values[i]**2)),math.log(diameters[i]*math.log(n_values[i])/(p_values[i]**2))],color='purple')
-                #plt.plot([i-0.1,i+0.1],[math.log((n_values[i]**(3/2))/(2*k_values[i])),math.log((n_values[i]**(3/2))/(2*k_values[i]))],color='blue')
+                #plt.plot([i-0.1,i+0.1],[math.log((n_values[i]**(2))/(2*k_values[i])),math.log((n_values[i]**(2))/(2*k_values[i]))],color='blue')
                 #plt.plot([i-0.1,i+0.1],[math.log(n_values[i]**2),math.log(n_values[i]**2)],color='blue')
                 plt.plot([i-0.1,i+0.1],[math.log(analytical_bound(n_values[i],p_values[i])),math.log(analytical_bound(n_values[i],p_values[i]))],color='blue')
+                #plt.plot([i-0.1,i+0.1],[math.log(((n_values[i])**(2))/(4*k_values[i])),math.log(((n_values[i])**(2))/(4*k_values[i]))],color='blue')
+                #plt.plot([i-0.1,i+0.1],[math.log(((n_values[i])**(2))/(k_values[i]**2)),math.log(((n_values[i])**(2))/(k_values[i]**2))],color='blue')
                 
     # Plot
     print("Diameters: ", diameters)
@@ -459,10 +475,13 @@ def log_box_plot(data,desired_parameter,show_bounds=False):
     if 'type' in data[0][0]:
         plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])) for i in range(len(graph_type))])
     else:
-        #alpha_list = [0.66,0.71,0.75,0.78,0.8,0.8,0.8,0.8,0.8]
-        #plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])+", "+"\n"+r'$\alpha$'+"="+str(alpha_list[i])) for i in range(len(graph_type))])
-        plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])+", "+"\n"+str(graph_type[i][2])+"="+str(graph_type[i][1])+", "+"\n"+"i"+"="+str(graph_type[i][3])) if len(graph_type[i])==4 else str("n="+str(graph_type[i][0])+", "+"\n"+str(graph_type[i][2])+"="+str(graph_type[i][1])) for i in range(len(graph_type))])
-    plt.title('Boxplots of '+desired_parameter+ ' on a logarithmic scale')
+        alpha_list = [0.66,0.71,0.75,0.78,0.8,0.8,0.8,0.8,0.8]
+        plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])+", "+"\n"+r'$\alpha$'+"="+str(alpha_list[i])) for i in range(len(graph_type))])
+        #plt.boxplot(filtered_data, positions=[i for i in range(len(filtered_data))], tick_labels=[str("n="+str(graph_type[i][0])+", "+"\n"+str(graph_type[i][2])+"="+str(graph_type[i][1])+", "+"\n"+"i"+"="+str(graph_type[i][3])) if len(graph_type[i])==4 else str("n="+str(graph_type[i][0])+", "+"\n"+str(graph_type[i][2])+"="+str(graph_type[i][1])) for i in range(len(graph_type))])
+    if desired_parameter == 'Time taken':
+        plt.title('Boxplots of time taken on a logarithmic scale')
+    else:
+        plt.title('Boxplots of '+desired_parameter+ ' on a logarithmic scale')
     plt.ylabel(desired_parameter)
     if (desired_parameter == 'Time taken') and (show_bounds == True):
         plt.legend()
@@ -629,8 +648,8 @@ if __name__=='__main__':
     #box_plot(data,'Average size of disconnected graph removed')
     #box_plot(data,'Size of target graph')
     #box_plot(data,'Time taken',True)
-    #log_box_plot(data,'Time taken',True)
+    log_box_plot(data,'Time taken',True)
     #mindeg_diam_plot(data)
     #np_diam_plot(data)
     #line_graph_time_taken(data)
-    print(analytical_bound(10000,10000**(-0.6)))
+    #print(analytical_bound(10000,10000**(-0.6)))

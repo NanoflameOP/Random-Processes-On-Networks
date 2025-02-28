@@ -8,9 +8,6 @@ import sys
 import copy
 import numpy
 
-############ To Do ##############
-## Paralellise edge_to_node
-## Paralellise prefix_sum
 
 
 class Node():
@@ -138,7 +135,6 @@ def approximate_B(n,p,E):
 
 
 def prefix_sum(list_values):
-    # Needs implementing in parallel!! (Done by parallelising y.append() and reversing process. i.e. not the recursion parts)
     # Need to do in parallel while keeping the order of indexes correct
     # Perform inclusive prefix sum on given list using parallel processing
     # The length of the list passed through must be a power of 2!!
@@ -161,7 +157,6 @@ def prefix_sum(list_values):
     
 
 def edge_to_node_pairing(node_list,edge_list):
-    # Needs implementing in parallel!!
     # Convert list of [1,26,89,...] edges to actual connections in node attributes
     # Edge list comes ordered already from pzer
     n = len(node_list)
@@ -645,7 +640,7 @@ def lower_bound_conjecture(n_lim,p_lim,iterations,do_filter=False):
         results.append(column)
     # Now can plot results
     plt.figure()
-    plt.title("Colourmap of condition 1")
+    plt.title("Colourmap of "+ r'$\left\lceil(n-1)/d^{in}_{min}\right\rceil\geq diam(G(n,p))$')
     plt.pcolor(p_values,n_values,results,cmap="magma")
     plt.xlabel("p")
     plt.ylabel("n")
@@ -656,22 +651,22 @@ def lower_bound_conjecture(n_lim,p_lim,iterations,do_filter=False):
 
 if __name__ == "__main__":
     t = time.time()
-    n = 1000
+    n = 200
     a = 7/9
     p = n**(-a)
     iterations = 100
-    k = 30
+    k = 1
     i = 1
     print("Cores:",mp.cpu_count())
 
     # Mass allcast test
-    mass_relay_allcast(n,p,k,i,iterations,"erdos",False,'data_collection_91')
+##    mass_relay_allcast(n,p,k,i,iterations,"erdos",False,'data_collection_91')
 
     # Single allcast test
-##    print(perform_relay_allcast(n,p,k,i,"erdos",False))
+    print(perform_relay_allcast(n,p,k,i,"k_neighbour",False))
 
     # Colourmap for lower bound conjecture
-##    lower_bound_conjecture([100,200,10],[0.58,0.6,0.001],2,False)
+##    lower_bound_conjecture([90,110,1],[0.03,0.04,0.001],5,False)
 
     # Line graph test
 ##    lg = line_graph(n)
@@ -719,5 +714,3 @@ if __name__ == "__main__":
 ##    print(degree_data_collection(graph.nodes))
 
     print(time.time()-t)
-
-
