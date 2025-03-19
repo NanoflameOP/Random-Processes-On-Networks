@@ -1,5 +1,6 @@
 import multiprocessing as mp
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap, BoundaryNorm
 import random
 import time
 import math
@@ -641,10 +642,14 @@ def lower_bound_conjecture(n_lim,p_lim,iterations,do_filter=False):
     # Now can plot results
     plt.figure()
     plt.title("Colourmap of "+ r'$\left\lceil(n-1)/d^{in}_{min}\right\rceil\geq diam(G(n,p))$')
-    plt.pcolor(p_values,n_values,results,cmap="magma")
+    #plt.pcolor(p_values,n_values,results,cmap="magma")
+    binary_map = LinearSegmentedColormap.from_list("binary_cmap", ["black", "yellow"])
+    norm = BoundaryNorm([0, 0.5, 1], binary_map.N)
+    plt.pcolor(p_values,n_values,results,cmap=binary_map,norm=norm)
     plt.xlabel("p")
     plt.ylabel("n")
-    plt.colorbar()
+    cbar = plt.colorbar(ticks=[0, 1])
+    cbar.ax.set_yticklabels(["False", "True"])
     plt.show()
 
 
@@ -663,10 +668,10 @@ if __name__ == "__main__":
 ##    mass_relay_allcast(n,p,k,i,iterations,"erdos",False,'data_collection_91')
 
     # Single allcast test
-    print(perform_relay_allcast(n,p,k,i,"k_neighbour",False))
+##    print(perform_relay_allcast(n,p,k,i,"k_neighbour",False))
 
     # Colourmap for lower bound conjecture
-##    lower_bound_conjecture([90,110,1],[0.03,0.04,0.001],5,False)
+    lower_bound_conjecture([90,110,1],[0.03,0.04,0.001],5,False)
 
     # Line graph test
 ##    lg = line_graph(n)
